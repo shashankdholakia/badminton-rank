@@ -30,7 +30,7 @@ lines = [line.rstrip('\n') for line in open('tournaments.txt')]
 line = lines[0]
 print(line)
 s = requests.Session() 
-s.post(line, headers = {"ASP.NET_SessionId": "04hvjzcryj1t0zlxk21o0msc",'st': 'l=1033&exp=43839.48702875'})
+s.post(line, cookies = {'st': r'l=1033&exp=43841.9228685648&c=1'})
 r = s.get(line)
 
 html_page = r.content
