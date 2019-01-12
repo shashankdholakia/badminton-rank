@@ -62,6 +62,10 @@ def scraper(tournamentlink):
     soup = BeautifulSoup(html_page, "lxml")
     list_of_matches = []
     dayslist = []
+    #the variant links are the player links that change depending on the tournament
+    #basically the variant link links to a players' performance in that tournament
+    #but we will want the players' profile link, which does not change from tournament to tournament
+    variantlinks = {}
     singleswinnerlist = []
     doubleswinnerlist = []
     doublesloserlist = []
@@ -70,36 +74,53 @@ def scraper(tournamentlink):
         if '&d=' in link.get('href'):
             dayslist.append(link.get('href'))
     playernamedict = {}
-    
+    #iterate over every link corresponding to a given tournament day
     for day in dayslist:
+        #Get an HTML page for one specific day of a tournament
         r = s.get(string+day)
         html_page_matchesofthatday = r.content
         soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
+        #iterate over ALL links in that day of the tournament
+        #This contains all the matches played that day -- players, draws, etc
         for line in soup.find_all('a'):
+            #if the link is a draw, add it to a list that tabulates all the matches in a coherent form
             if "draw=" in line.get('href'):
                 list_of_matches.append(line.get('href'))
+            #if the link is a player, click on their name and add that profile link to the aforementioned list
+            #also add that link to a dictionary pairing those player profile links to the names of the players
+            #list_of_matches will now be formatted into a draw, winning player(s), losing player(s), draw, etc format
             if "player.aspx" in line.get('href'):
-                playernamedict[line.get('href')] = stripseed(line.string)
-                r_playerprofile = s.get(string+'/sport/'+line.get('href'))
-                html_page_playerprofiles = r_playerprofile.content
-                soup_playerprofile = BeautifulSoup(html_page_playerprofiles, "lxml")
-                print(line.get('href'))
-                print([playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')])
-                try:
-                    list_of_matches.append([playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')][0])
-                except(IndexError):
-                    list_of_matches.append('/player/'+stripseed(line.string))
+                if line.get('href') not in variantlinks.keys():
+                    r_playerprofile = s.get(string+'/sport/'+line.get('href'))
+                    html_page_playerprofiles = r_playerprofile.content
+                    soup_playerprofile = BeautifulSoup(html_page_playerprofiles, "lxml")
+                    try:
+                        playerprofilelink = [playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')][0]
+                        list_of_matches.append(playerprofilelink)
+                        playernamedict[playerprofilelink] = stripseed(line.string)
+                        variantlinks[line.get('href')] = playerprofilelink
+                    except(IndexError):
+                        list_of_matches.append('/player/'+stripseed(line.string))
+                        playernamedict['/player/'+stripseed(line.string)] = stripseed(line.string)
+
+                #the player profile link has already been accessed, no need to access it again
+                else:
+                    list_of_matches.append(variantlinks[line.get('href')])
+                    
         for i,line in enumerate(list_of_matches):
             if "draw=" in line:
                 try:
+                    #if it's a singles game, add the first player to the winners list and the second to the losers'
                     if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1]:
                         singleswinnerlist.append(list_of_matches[i+1])
                         singlesloserlist.append(list_of_matches[i+2])
+                    #if it's a doubles game, add the first and second players to the winners list and the third and fourth to the losers'
                     if r'/player/' in list_of_matches[i+3]:
                         doubleswinnerlist.append(list_of_matches[i+1])
                         doubleswinnerlist.append(list_of_matches[i+2])
                         doublesloserlist.append(list_of_matches[i+3])
                         doublesloserlist.append(list_of_matches[i+4])
+                #unless the last game of the list is a singles game; then add it differently
                 except(IndexError):
                         singleswinnerlist.append(list_of_matches[i+1])
                         singlesloserlist.append(list_of_matches[i+2])
