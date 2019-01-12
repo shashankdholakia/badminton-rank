@@ -9,6 +9,7 @@ Created on Tue Jan  8 20:19:32 2019
 from bs4 import BeautifulSoup
 import urllib3
 import requests
+import pandas as pd
 
 #define a function to replace the nth occurence of a substring in a string
 def nth_repl(s, sub, repl, nth):
@@ -66,10 +67,9 @@ def scraper(tournamentlink):
     #basically the variant link links to a players' performance in that tournament
     #but we will want the players' profile link, which does not change from tournament to tournament
     variantlinks = {}
-    singleswinnerlist = []
-    doubleswinnerlist = []
-    doublesloserlist = []
-    singlesloserlist = []
+    counter = 0
+    doubles_df = pd.DataFrame(columns=["Winner1","Winner2", "Loser1","Loser2"])
+    singles_df = pd.DataFrame(columns=["Winner","Loser"])
     for link in soup.find_all('a'):
         if '&d=' in link.get('href'):
             dayslist.append(link.get('href'))
@@ -112,20 +112,23 @@ def scraper(tournamentlink):
                 try:
                     #if it's a singles game, add the first player to the winners list and the second to the losers'
                     if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1]:
-                        singleswinnerlist.append(list_of_matches[i+1])
-                        singlesloserlist.append(list_of_matches[i+2])
+                        temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
+                        singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
+                        counter+=1
                     #if it's a doubles game, add the first and second players to the winners list and the third and fourth to the losers'
                     if r'/player/' in list_of_matches[i+3]:
-                        doubleswinnerlist.append(list_of_matches[i+1])
-                        doubleswinnerlist.append(list_of_matches[i+2])
-                        doublesloserlist.append(list_of_matches[i+3])
-                        doublesloserlist.append(list_of_matches[i+4])
+                        temp_df = pd.DataFrame({'Winner1':list_of_matches[i+1],'Winner2':list_of_matches[i+2],
+                                                'Loser1':list_of_matches[i+3],'Loser2':list_of_matches[i+4]},index=[1])
+    
+                        doubles_df = pd.concat([doubles_df,temp_df],ignore_index=True)
+                        counter+=1
                 #unless the last game of the list is a singles game; then add it differently
                 except(IndexError):
-                        singleswinnerlist.append(list_of_matches[i+1])
-                        singlesloserlist.append(list_of_matches[i+2])
-                    
-    return {"Player links": playernamedict,"Singles Winners": singleswinnerlist,"Singles Losers": singlesloserlist,"Doubles Winners": doubleswinnerlist,"Doubles Losers": doublesloserlist}
+                    temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
+                    singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
+                    counter+=1
+                print(counter)
+    return {"Player links": playernamedict,"Singles results": singles_df,"Doubles results":doubles_df}
 #html_page_draws = r.content
 #soup = BeautifulSoup(html_page_draws, "lxml")
 #for namelink in soup.find_all('a'):

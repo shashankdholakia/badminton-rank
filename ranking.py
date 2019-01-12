@@ -223,11 +223,10 @@ def main():
         print(link)
         tournamentdata = scraper(link)
         playerlinks = tournamentdata["Player links"]
-        singleswinners = tournamentdata["Singles Winners"]
-        singleslosers = tournamentdata["Singles Losers"]
-        doubleswinners = tournamentdata["Doubles Winners"]
-        doubleslosers = tournamentdata["Doubles Losers"]
-        
+        singlesresults = tournamentdata["Singles results"]
+        doublesresults = tournamentdata["Doubles results"]
+        print(singlesresults)
+        print(doublesresults)
         
 #        for i in games:
 #            if (i[0] not in r.ratings):
