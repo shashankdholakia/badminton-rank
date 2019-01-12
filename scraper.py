@@ -30,19 +30,7 @@ def stripseed(namestring):
         return namestring[0:n-1]
     else:
         return namestring
-def winnerlister(list_of_matches):
 
-    for i,line in enumerate(list_of_matches):
-        if "draw=" in line:
-            if 'match-info' in list_of_matches[i+3]:
-                singleswinnerlist.append(list_of_matches[i+1])
-                singlesloserlist.append(list_of_matches[i+2])
-            if 'match-info' in list_of_matches[i+5]:
-                doubleswinnerlist.append(list_of_matches[i+1])
-                doubleswinnerlist.append(list_of_matches[i+2])
-                doublesloserlist.append(list_of_matches[i+3])
-                doublesloserlist.append(list_of_matches[i+4])
-    return[singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist]
     
 def scraper(tournamentlink):    
     """
@@ -62,6 +50,7 @@ def scraper(tournamentlink):
     the zeroth element from singles winners and singles losers should be the winner and loser of that game
     
     """
+    
     string = 'http://tournamentsoftware.com'
     s = requests.Session() 
     ###gets past the GDPR cookie wall in tournamentsoftware.com
@@ -91,9 +80,20 @@ def scraper(tournamentlink):
             if "player.aspx" in line.get('href'):
                 playernamedict[line.get('href')] = stripseed(line.string)
                 print(stripseed(line.string))
-        print(len(list_of_matches))
-        singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist = winnerlister(list_of_matches)
-        return {"Player links": playernamedict,"Singles Winners": singleswinnerlist,"Singles Losers": singlesloserlist,"Doubles Winners": doubleswinnerlist,"Doubles Losers": doublesloserlist}
+
+        
+        for i,line in enumerate(list_of_matches):
+            if "draw=" in line:
+                if 'match-info' in list_of_matches[i+3]:
+                    singleswinnerlist.append(list_of_matches[i+1])
+                    singlesloserlist.append(list_of_matches[i+2])
+                if 'match-info' in list_of_matches[i+5]:
+                    doubleswinnerlist.append(list_of_matches[i+1])
+                    doubleswinnerlist.append(list_of_matches[i+2])
+                    doublesloserlist.append(list_of_matches[i+3])
+                    doublesloserlist.append(list_of_matches[i+4])
+                    
+    return {"Player links": playernamedict,"Singles Winners": singleswinnerlist,"Singles Losers": singlesloserlist,"Doubles Winners": doubleswinnerlist,"Doubles Losers": doublesloserlist}
 #html_page_draws = r.content
 #soup = BeautifulSoup(html_page_draws, "lxml")
 #for namelink in soup.find_all('a'):

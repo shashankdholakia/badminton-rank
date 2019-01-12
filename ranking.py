@@ -6,11 +6,12 @@ import csv
 import trueskill
 import math
 from scipy.special import ndtri
+from scraper import scraper
 
 
 class Ranking:
     
-    def __init__(self, Ratings={})
+    def __init__(self, Ratings={}):
         self.ratings = Ratings
         env = trueskill.TrueSkill(draw_probability=0.0)
         env.make_as_global()
@@ -86,7 +87,7 @@ class Ranking:
         Resets all ratings to average, or default, for an unknown player
         but preserves the players themselves
         """
-        for key, value in self.ratings.iteritems():
+        for key, value in self.ratings.items():
             self.ratings[key]=Rating()
             
     def deleteValues(self):
@@ -212,28 +213,41 @@ class Ranking:
 def num_there(s):
     """helper function for main()"""
     return any(i.isdigit() for i in s)
+
 def main():
     r = Ranking()
     r.resetValues()
-    games = r.readCSV("/Users/shashank/Documents/Badminton/badminton.csv")
-    for i in games:
-        if (i[0] not in r.ratings):
-            r.addPlayer(i[0])
-        if (i[1] not in r.ratings):
-            r.addPlayer(i[1])
-        if (i[2] not in r.ratings and not num_there(i[2])):
-            r.addPlayer(i[2])
-        if (i[3] not in r.ratings and not num_there(i[3])):
-            r.addPlayer(i[3])
-        if not num_there(i[2]):
-            print(r.Pwin_doubles(i[0],i[1],i[2],i[3]))
-            print(r.predict_score(i[0],i[1],i[2],i[3]))
-            print("_____")
-            r.playDoubles(i[0],i[1],i[2],i[3])
-        else:
-            r.playSingles(i[0],i[1])
-    r.printLeaderboard(toCSV=True,path="/Users/shashank/Documents/Badminton/ranking.csv")
+    
+    tournamentlinks = [line.rstrip('\n') for line in open('tournaments.txt')]
+    for link in tournamentlinks[0:1]:
+        tournamentdata = scraper(link)
+        playerlinks = tournamentdata["Player links"]
+        singleswinners = tournamentdata["Singles Winners"]
+        singleslosers = tournamentdata["Singles Losers"]
+        doubleswinners = tournamentdata["Doubles Winners"]
+        doubleslosers = tournamentdata["Doubles Losers"]
+        
+        print(playerlinks.values)
+        
+#        for i in games:
+#            if (i[0] not in r.ratings):
+#                r.addPlayer(i[0])
+#            if (i[1] not in r.ratings):
+#                r.addPlayer(i[1])
+#            if (i[2] not in r.ratings and not num_there(i[2])):
+#                r.addPlayer(i[2])
+#            if (i[3] not in r.ratings and not num_there(i[3])):
+#                r.addPlayer(i[3])
+#            if not num_there(i[2]):
+#                print(r.Pwin_doubles(i[0],i[1],i[2],i[3]))
+#                print(r.predict_score(i[0],i[1],i[2],i[3]))
+#                print("_____")
+#                r.playDoubles(i[0],i[1],i[2],i[3])
+#            else:
+#                r.playSingles(i[0],i[1])
 
 #if running this code itself, find and print the rankings
 if __name__ == "__main__":
     main()
+    
+    
