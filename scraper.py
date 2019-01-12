@@ -76,22 +76,26 @@ def scraper(tournamentlink):
         html_page_matchesofthatday = r.content
         soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
         for line in soup.find_all('a'):
-            list_of_matches.append(line.get('href'))
-            if "player.aspx" in line.get('href'):
-                playernamedict[line.get('href')] = stripseed(line.string)
-                print(stripseed(line.string))
+            if ("draw=" in line.get('href')) or ("player.aspx" in line.get('href')):
+                list_of_matches.append(line.get('href'))
+                if "player.aspx" in line.get('href'):
+                    playernamedict[line.get('href')] = stripseed(line.string)
 
         
         for i,line in enumerate(list_of_matches):
             if "draw=" in line:
-                if 'player.aspx' not in list_of_matches[i+3] and 'player.aspx' in list_of_matches[i+1]:
-                    singleswinnerlist.append(list_of_matches[i+1])
-                    singlesloserlist.append(list_of_matches[i+2])
-                if 'player.aspx' in list_of_matches[i+3]:
-                    doubleswinnerlist.append(list_of_matches[i+1])
-                    doubleswinnerlist.append(list_of_matches[i+2])
-                    doublesloserlist.append(list_of_matches[i+3])
-                    doublesloserlist.append(list_of_matches[i+4])
+                try:
+                    if 'player.aspx' not in list_of_matches[i+3] and 'player.aspx' in list_of_matches[i+1]:
+                        singleswinnerlist.append(list_of_matches[i+1])
+                        singlesloserlist.append(list_of_matches[i+2])
+                    if 'player.aspx' in list_of_matches[i+3]:
+                        doubleswinnerlist.append(list_of_matches[i+1])
+                        doubleswinnerlist.append(list_of_matches[i+2])
+                        doublesloserlist.append(list_of_matches[i+3])
+                        doublesloserlist.append(list_of_matches[i+4])
+                except(IndexError):
+                        singleswinnerlist.append(list_of_matches[i+1])
+                        singlesloserlist.append(list_of_matches[i+2])
                     
     return {"Player links": playernamedict,"Singles Winners": singleswinnerlist,"Singles Losers": singlesloserlist,"Doubles Winners": doubleswinnerlist,"Doubles Losers": doublesloserlist}
 #html_page_draws = r.content

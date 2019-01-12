@@ -220,6 +220,7 @@ def main():
     
     tournamentlinks = [line.rstrip('\n') for line in open('tournaments.txt')]
     for link in tournamentlinks[0:1]:
+        print(link)
         tournamentdata = scraper(link)
         playerlinks = tournamentdata["Player links"]
         singleswinners = tournamentdata["Singles Winners"]
@@ -227,7 +228,6 @@ def main():
         doubleswinners = tournamentdata["Doubles Winners"]
         doubleslosers = tournamentdata["Doubles Losers"]
         
-        print(playerlinks.values)
         
 #        for i in games:
 #            if (i[0] not in r.ratings):
