@@ -76,19 +76,26 @@ def scraper(tournamentlink):
         html_page_matchesofthatday = r.content
         soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
         for line in soup.find_all('a'):
-            if ("draw=" in line.get('href')) or ("player.aspx" in line.get('href')):
+            if "draw=" in line.get('href'):
                 list_of_matches.append(line.get('href'))
-                if "player.aspx" in line.get('href'):
-                    playernamedict[line.get('href')] = stripseed(line.string)
-
-        
+            if "player.aspx" in line.get('href'):
+                playernamedict[line.get('href')] = stripseed(line.string)
+                r_playerprofile = s.get(string+'/sport/'+line.get('href'))
+                html_page_playerprofiles = r_playerprofile.content
+                soup_playerprofile = BeautifulSoup(html_page_playerprofiles, "lxml")
+                print(line.get('href'))
+                print([playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')])
+                try:
+                    list_of_matches.append([playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')][0])
+                except(IndexError):
+                    list_of_matches.append('/player/'+stripseed(line.string))
         for i,line in enumerate(list_of_matches):
             if "draw=" in line:
                 try:
-                    if 'player.aspx' not in list_of_matches[i+3] and 'player.aspx' in list_of_matches[i+1]:
+                    if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1]:
                         singleswinnerlist.append(list_of_matches[i+1])
                         singlesloserlist.append(list_of_matches[i+2])
-                    if 'player.aspx' in list_of_matches[i+3]:
+                    if r'/player/' in list_of_matches[i+3]:
                         doubleswinnerlist.append(list_of_matches[i+1])
                         doubleswinnerlist.append(list_of_matches[i+2])
                         doublesloserlist.append(list_of_matches[i+3])
