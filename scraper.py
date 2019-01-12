@@ -84,10 +84,10 @@ def scraper(tournamentlink):
         
         for i,line in enumerate(list_of_matches):
             if "draw=" in line:
-                if 'match-info' in list_of_matches[i+3]:
+                if 'player.aspx' not in list_of_matches[i+3] and 'player.aspx' in list_of_matches[i+1]:
                     singleswinnerlist.append(list_of_matches[i+1])
                     singlesloserlist.append(list_of_matches[i+2])
-                if 'match-info' in list_of_matches[i+5]:
+                if 'player.aspx' in list_of_matches[i+3]:
                     doubleswinnerlist.append(list_of_matches[i+1])
                     doubleswinnerlist.append(list_of_matches[i+2])
                     doublesloserlist.append(list_of_matches[i+3])
