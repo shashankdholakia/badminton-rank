@@ -9,6 +9,7 @@ Created on Tue Jan  8 20:19:32 2019
 from bs4 import BeautifulSoup
 import urllib3
 import requests
+
 #define a function to replace the nth occurence of a substring in a string
 def nth_repl(s, sub, repl, nth):
     find = s.find(sub)
@@ -43,42 +44,56 @@ def winnerlister(list_of_matches):
                 doublesloserlist.append(list_of_matches[i+4])
     return[singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist]
     
+def scraper(tournamentlink):    
+    """
+    Scrapes the tournamentsoftware website to find a list of every match played
+    and winners and losers. 
     
-string = 'http://tournamentsoftware.com'
-lines = [line.rstrip('\n') for line in open('tournaments.txt')]
-#for line in lines:
-line = lines[0]
-print(line)
-print('blah')
-s = requests.Session() 
-s.post(line, cookies = {'st': r'l=1033&exp=43841.9228685648&c=1'})
-matcheslistlink = nth_repl(line,'tournament','matches',2)
-r = s.get(matcheslistlink)
-html_page = r.content
-soup = BeautifulSoup(html_page, "lxml")
-list_of_matches = []
-dayslist = []
-singleswinnerlist = []
-doubleswinnerlist = []
-doublesloserlist = []
-singlesloserlist = []
-for link in soup.find_all('a'):
-    if '&d=' in link.get('href'):
-        dayslist.append(link.get('href'))
-playernamedict = {}
-
-for day in dayslist:
-    r = s.get(string+day)
-    html_page_matchesofthatday = r.content
-    soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
-    for line in soup.find_all('a'):
-        list_of_matches.append(line.get('href'))
-        if "player.aspx" in line.get('href'):
-            playernamedict[line.get('href')] = stripseed(line.string)
-            print(stripseed(line.string))
-    print(len(list_of_matches))
-    singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist = winnerlister(list_of_matches)
-        
+    Inputs: link to the main tournament page on tournamentsoftware.com
+    
+    Outputs: Dictionary containing
+    Player links: dictionary containing links to all players as the key and the players' names as values
+    Singles Winners: list containing all singles winners in chronological format
+    Singles Losers: list containing all singles losers in chronological format
+    Doubles Winners: list containing all doubles winners in chronological format
+    Doubles Losers: list containing all doubles losers in chronological format
+    
+    Note: the singles winners/losers and doubles winners/losers should correspond ie
+    the zeroth element from singles winners and singles losers should be the winner and loser of that game
+    
+    """
+    string = 'http://tournamentsoftware.com'
+    s = requests.Session() 
+    ###gets past the GDPR cookie wall in tournamentsoftware.com
+    #note: test on other machines and test after clearing cookies to see if it still works
+    s.post(tournamentlink, cookies = {'st': r'l=1033&exp=43841.9228685648&c=1'})
+    matcheslistlink = nth_repl(tournamentlink,'tournament','matches',2)
+    r = s.get(matcheslistlink)
+    html_page = r.content
+    soup = BeautifulSoup(html_page, "lxml")
+    list_of_matches = []
+    dayslist = []
+    singleswinnerlist = []
+    doubleswinnerlist = []
+    doublesloserlist = []
+    singlesloserlist = []
+    for link in soup.find_all('a'):
+        if '&d=' in link.get('href'):
+            dayslist.append(link.get('href'))
+    playernamedict = {}
+    
+    for day in dayslist:
+        r = s.get(string+day)
+        html_page_matchesofthatday = r.content
+        soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
+        for line in soup.find_all('a'):
+            list_of_matches.append(line.get('href'))
+            if "player.aspx" in line.get('href'):
+                playernamedict[line.get('href')] = stripseed(line.string)
+                print(stripseed(line.string))
+        print(len(list_of_matches))
+        singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist = winnerlister(list_of_matches)
+        return {"Player links": playernamedict,"Singles Winners": singleswinnerlist,"Singles Losers": singlesloserlist,"Doubles Winners": doubleswinnerlist,"Doubles Losers": doublesloserlist}
 #html_page_draws = r.content
 #soup = BeautifulSoup(html_page_draws, "lxml")
 #for namelink in soup.find_all('a'):
