@@ -13,8 +13,8 @@ class Ranking:
     
     def __init__(self, Ratings={}):
         self.ratings = Ratings
-        env = trueskill.TrueSkill(draw_probability=0.0)
-        env.make_as_global()
+        self.env = trueskill.TrueSkill(draw_probability=0.0)
+        self.env.make_as_global()
     
     def __str__(self):
         """
@@ -47,7 +47,7 @@ class Ranking:
     #enter winner first, loser second
     def playSingles(self,name1,name2):
         
-        self.ratings[name1], self.ratings[name2] = env.rate_1vs1(self.ratings[name1],self.ratings[name2])
+        self.ratings[name1], self.ratings[name2] = self.env.rate_1vs1(self.ratings[name1],self.ratings[name2])
     
     #enter winning pair first, losing pair second
     def playDoubles(self,name1,name2,name3,name4):
@@ -56,7 +56,7 @@ class Ranking:
         """
         t1 = (self.ratings[name1],self.ratings[name2])
         t2 = (self.ratings[name3],self.ratings[name4])
-        newt1, newt2 = env.rate([t1,t2])
+        newt1, newt2 = self.env.rate([t1,t2])
         self.ratings[name1],self.ratings[name2] = newt1
         self.ratings[name3],self.ratings[name4] = newt2
         
@@ -65,7 +65,7 @@ class Ranking:
     def playDoubles_score(self,name1,name2,name3,name4,winner_score,loser_score):
         t1 = (self.ratings[name1],self.ratings[name2])
         t2 = (self.ratings[name3],self.ratings[name4])
-        newt1, newt2 = env.rate([t1,t2])
+        newt1, newt2 = self.env.rate([t1,t2])
         name1_average = newt1[0].mu
         name1_sigma = newt1[0].sigma
         name2_average = newt1[1].mu
@@ -225,18 +225,26 @@ def main():
         playerlinks = tournamentdata["Player links"]
         singlesresults = tournamentdata["Singles results"]
         doublesresults = tournamentdata["Doubles results"]
-        print(singlesresults)
-        print(doublesresults)
         
-#        for i in games:
-#            if (i[0] not in r.ratings):
-#                r.addPlayer(i[0])
-#            if (i[1] not in r.ratings):
-#                r.addPlayer(i[1])
-#            if (i[2] not in r.ratings and not num_there(i[2])):
-#                r.addPlayer(i[2])
-#            if (i[3] not in r.ratings and not num_there(i[3])):
-#                r.addPlayer(i[3])
+        #match is the results for a single match
+        for header,match in singlesresults.iterrows():
+            #match[0] is player1
+            if (playerlinks[match[0]] not in r.ratings):
+                r.addPlayer(playerlinks[match[0]])
+            #match[1] is player2
+            if (playerlinks[match[1]] not in r.ratings):
+                r.addPlayer(playerlinks[match[1]])
+            r.playSingles(playerlinks[match[0]],playerlinks[match[1]])
+    r.printLeaderboard()
+#        for header,match in singles_df.iterrows():
+#            if (match[0] not in r.ratings):
+#                r.addPlayer(playerlinks[match[0]])
+#            if (match[1] not in r.ratings):
+#                r.addPlayer(playerlinks[match[1]])
+#            if (match[2] not in r.ratings and not num_there(i[2])):
+#                r.addPlayer(playerlinks[match[2]])
+#            if (match[3] not in r.ratings and not num_there(i[3])):
+#                r.addPlayer(playerlinks[3])
 #            if not num_there(i[2]):
 #                print(r.Pwin_doubles(i[0],i[1],i[2],i[3]))
 #                print(r.predict_score(i[0],i[1],i[2],i[3]))
