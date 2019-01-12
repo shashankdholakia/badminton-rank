@@ -114,20 +114,16 @@ def scraper(tournamentlink):
                     if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1]:
                         temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
                         singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
-                        counter+=1
                     #if it's a doubles game, add the first and second players to the winners list and the third and fourth to the losers'
                     if r'/player/' in list_of_matches[i+3]:
                         temp_df = pd.DataFrame({'Winner1':list_of_matches[i+1],'Winner2':list_of_matches[i+2],
                                                 'Loser1':list_of_matches[i+3],'Loser2':list_of_matches[i+4]},index=[1])
     
                         doubles_df = pd.concat([doubles_df,temp_df],ignore_index=True)
-                        counter+=1
                 #unless the last game of the list is a singles game; then add it differently
                 except(IndexError):
                     temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
                     singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
-                    counter+=1
-                print(counter)
     return {"Player links": playernamedict,"Singles results": singles_df,"Doubles results":doubles_df}
 #html_page_draws = r.content
 #soup = BeautifulSoup(html_page_draws, "lxml")
