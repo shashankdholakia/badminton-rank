@@ -95,7 +95,15 @@ class Ranking:
         Deletes all players from the rankings
         """
         self.ratings = {}
-    
+        
+    def get_leaderboard(self):
+        list_to_be_sorted = []
+        for i in self.ratings.items():
+            list_to_be_sorted.append((i[0],[i[1].mu,i[1].sigma*2]))
+        Ratings_sorted_by_value = OrderedDict(sorted(list_to_be_sorted, key=lambda x: x[1][0],reverse=True))
+        leaderboard = pandas.DataFrame.from_items(Ratings_sorted_by_value.items(),["Average","95% CI"], orient='index')
+        return leaderboard
+        
     def printLeaderboard(self, toCSV=False, path=''):
         """
         Prints leaderboard to console, or if toCSV is True, creates a CSV
@@ -219,40 +227,41 @@ def main():
     r.resetValues()
     
     tournamentlinks = [line.rstrip('\n') for line in open('tournaments.txt')]
-    for link in tournamentlinks[0:1]:
+    for link in tournamentlinks[7:8]:
         print(link)
         tournamentdata = scraper(link)
         playerlinks = tournamentdata["Player links"]
         singlesresults = tournamentdata["Singles results"]
         doublesresults = tournamentdata["Doubles results"]
-        
-        #match is the results for a single match
+
+        #match is the results for a singles match
         for header,match in singlesresults.iterrows():
             #match[0] is player1
-            if (playerlinks[match[0]] not in r.ratings):
-                r.addPlayer(playerlinks[match[0]])
+            if (match[0] not in r.ratings):
+                r.addPlayer(match[0])
             #match[1] is player2
-            if (playerlinks[match[1]] not in r.ratings):
-                r.addPlayer(playerlinks[match[1]])
-            r.playSingles(playerlinks[match[0]],playerlinks[match[1]])
-    r.printLeaderboard()
-#        for header,match in singles_df.iterrows():
-#            if (match[0] not in r.ratings):
-#                r.addPlayer(playerlinks[match[0]])
-#            if (match[1] not in r.ratings):
-#                r.addPlayer(playerlinks[match[1]])
-#            if (match[2] not in r.ratings and not num_there(i[2])):
-#                r.addPlayer(playerlinks[match[2]])
-#            if (match[3] not in r.ratings and not num_there(i[3])):
-#                r.addPlayer(playerlinks[3])
-#            if not num_there(i[2]):
-#                print(r.Pwin_doubles(i[0],i[1],i[2],i[3]))
-#                print(r.predict_score(i[0],i[1],i[2],i[3]))
-#                print("_____")
-#                r.playDoubles(i[0],i[1],i[2],i[3])
-#            else:
-#                r.playSingles(i[0],i[1])
+            if (match[1] not in r.ratings):
+                r.addPlayer(match[1])
+            r.playSingles(match[0],match[1])
+        
+        for header,match in doublesresults.iterrows():
+            if (match[0] not in r.ratings):
+                r.addPlayer(match[0])
+            if (match[1] not in r.ratings):
+                r.addPlayer(match[1])
+            if (match[2] not in r.ratings):
+                r.addPlayer(match[2])
+            if (match[3] not in r.ratings):
+                r.addPlayer(match[3])
+            r.playDoubles(match[0],match[1],match[2],match[3])
 
+        leaderboard = r.get_leaderboard()
+        leaderboard_names = leaderboard
+        for index,value in leaderboard.iterrows():
+            print(playerlinks[index])
+            print(value)
+            leaderboard_names = leaderboard_names.rename(playerlinks)
+        print(leaderboard_names)
 #if running this code itself, find and print the rankings
 if __name__ == "__main__":
     main()
