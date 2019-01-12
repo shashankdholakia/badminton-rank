@@ -227,7 +227,7 @@ def main():
     r.resetValues()
     
     tournamentlinks = [line.rstrip('\n') for line in open('tournaments.txt')]
-    for link in tournamentlinks[7:8]:
+    for link in tournamentlinks[0:2]:
         print(link)
         tournamentdata = scraper(link)
         playerlinks = tournamentdata["Player links"]
@@ -258,9 +258,8 @@ def main():
         leaderboard = r.get_leaderboard()
         leaderboard_names = leaderboard
         for index,value in leaderboard.iterrows():
-            print(playerlinks[index])
-            print(value)
-            leaderboard_names = leaderboard_names.rename(playerlinks)
+            if index in playerlinks.keys()
+                leaderboard_names = leaderboard_names.rename(playerlinks)
         leaderboard_names.to_csv('ranking.csv')
         print(leaderboard_names)
 #if running this code itself, find and print the rankings
