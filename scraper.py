@@ -23,6 +23,12 @@ def nth_repl(s, sub, repl, nth):
     if i == nth:
         return s[:find]+repl+s[find + len(sub):]
     return s
+def stripseed(namestring):
+    if "[" in namestring:
+        n = namestring.index('[')
+        return namestring[0:n-1]
+    else:
+        return namestring
 def winnerlister(list_of_matches):
 
     for i,line in enumerate(list_of_matches):
@@ -59,11 +65,17 @@ singlesloserlist = []
 for link in soup.find_all('a'):
     if '&d=' in link.get('href'):
         dayslist.append(link.get('href'))
+playernamedict = {}
+
 for day in dayslist:
     r = s.get(string+day)
     html_page_matchesofthatday = r.content
     soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
-    list_of_matches = [line.get('href') for line in soup.find_all('a')]
+    for line in soup.find_all('a'):
+        list_of_matches.append(line.get('href'))
+        if "player.aspx" in line.get('href'):
+            playernamedict[line.get('href')] = stripseed(line.string)
+            print(stripseed(line.string))
     print(len(list_of_matches))
     singleswinnerlist,singlesloserlist,doubleswinnerlist,doublesloserlist = winnerlister(list_of_matches)
         
