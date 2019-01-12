@@ -261,6 +261,7 @@ def main():
             print(playerlinks[index])
             print(value)
             leaderboard_names = leaderboard_names.rename(playerlinks)
+        leaderboard_names.to_csv('ranking.csv')
         print(leaderboard_names)
 #if running this code itself, find and print the rankings
 if __name__ == "__main__":
