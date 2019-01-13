@@ -5,6 +5,7 @@ import pandas
 import csv
 import trueskill
 import math
+import numpy as np
 from scipy.special import ndtri
 from scraper import scraper
 
@@ -80,7 +81,7 @@ class Ranking:
         self.ratings[name4] = Rating()
         
         self.ratings[name1], self.ratings[name2] = newt1
-        self.ratings[name3], self,ratings[name4] = newt2
+        self.ratings[name3], self.ratings[name4] = newt2
         
     def resetValues(self):
         """
@@ -169,8 +170,8 @@ class Ranking:
         before and during 2017.
         """
         
-        rA = Ratings[name1]
-        rB = Ratings[name2]
+        rA = self.ratings[name1]
+        rB = self.ratings[name2]
         deltaMu = rA.mu - rB.mu
         rsss = math.sqrt(rA.sigma**2 + rB.sigma**2)
         trueskill_winprob = trueskill.TrueSkill().cdf(deltaMu/rsss)
@@ -198,7 +199,7 @@ class Ranking:
         and in professional matches, where absolute differences in skill are less
         """
         
-        winprob = Pwin_doubles(name1,name2,name3,name4)
+        winprob = self.Pwin_doubles(name1,name2,name3,name4)
         percent_score = winprob*0.273698660319+0.363123884308
         if percent_score < .5:
             team2 = 21
@@ -209,13 +210,13 @@ class Ranking:
             team2 = round((21*(1-percent_score))/(percent_score))
         return team1,team2
     
-    def printPwin_singles(name1,name2):
-        print(name1+": "+str(Pwin_singles(name1,name2)*100)+"%")
-        print(name2+": "+str(Pwin_singles(name2,name1)*100)+"%")
+    def printPwin_singles(self,name1,name2):
+        print(name1+": "+str(self.Pwin_singles(name1,name2)*100)+"%")
+        print(name2+": "+str(self.Pwin_singles(name2,name1)*100)+"%")
         
-    def printPwin_doubles(name1,name2,name3,name4):
-        print(name1+", "+name2+": "+str(Pwin_doubles(name1,name2,name3,name4)))
-        print(name3+", "+name4+": "+str(Pwin_doubles(name3,name4,name1,name2)))
+    def printPwin_doubles(self,name1,name2,name3,name4):
+        print(name1+", "+name2+": "+str(self.Pwin_doubles(name1,name2,name3,name4)))
+        print(name3+", "+name4+": "+str(self.Pwin_doubles(name3,name4,name1,name2)))
 
     
 def num_there(s):
