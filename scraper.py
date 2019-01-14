@@ -11,6 +11,20 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
+
+class Alias:
+    def __init__(self, filename='alias.csv'):
+        if os.path.exists(filename):
+            self.aliases = pd.read_csv(filename)
+            
+        else:
+            self.aliases = pd.DataFrame()
+
+        
+    def get_defaultname(currentid,name = None):
+        pass
+    def get_defaultid(name,currentid = None):
+        pass
 #define a function to replace the nth occurence of a substring in a string
 def nth_repl(s, sub, repl, nth):
     find = s.find(sub)
@@ -145,15 +159,17 @@ def scraper(tournamentlink):
                 if "draw=" in line:
                     try:
                         #if it's a singles game, add the first player to the winners list and the second to the losers'
-                        if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1]:
+                        if r'/player/' not in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1] and r'/player/' in list_of_matches[i+2]:
                             temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
                             singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
                         #if it's a doubles game, add the first and second players to the winners list and the third and fourth to the losers'
-                        if r'/player/' in list_of_matches[i+3]:
+                        if r'/player/' in list_of_matches[i+3] and r'/player/' in list_of_matches[i+1] and r'/player/' in list_of_matches[i+2] and r'/player/' in list_of_matches[i+4]:
                             temp_df = pd.DataFrame({'Winner1':list_of_matches[i+1],'Winner2':list_of_matches[i+2],
                                                     'Loser1':list_of_matches[i+3],'Loser2':list_of_matches[i+4]},index=[1])
         
                             doubles_df = pd.concat([doubles_df,temp_df],ignore_index=True)
+                        else:
+                            pass
                     #unless the last game of the list is a singles game; then add it differently
                     except(IndexError):
                         temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
