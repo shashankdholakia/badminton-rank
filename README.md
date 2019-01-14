@@ -1,5 +1,5 @@
 # badminton-rank
-Ranking code for badminton tournaments using Microsoft's TrueSkill algorithm. Uses html scraping to aggregate match data over multiple tournaments. Represents each players' skill as a Gaussian distribution with a mean and standard deviation. TrueSkill uses Bayesian inference to "update" each player's skill with each match played. Also has ability to generate win probabilities for singles or doubles matches.
+Ranking code for badminton tournaments using Microsoft's TrueSkill algorithm. Uses html scraping to aggregate match data over multiple tournaments. Represents each players' skill as a Gaussian distribution with a mean and standard deviation. TrueSkill uses Bayesian inference to "update" each player's skill with each match played, which we implement to inherently account for propagation of uncertainties and recency. Also has ability to generate win probabilities for singles or doubles matches.
 
 We make certain simplifying assumptions in order to rank singles, doubles and mixed games. Firstly, we assume that the skill of a doubles pair is the sum of the skills of the individual partners. Presently, we also assume that players have approximately equal skill in all formats of the game.
 
