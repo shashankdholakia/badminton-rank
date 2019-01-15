@@ -13,18 +13,45 @@ import pandas as pd
 
 
 class Alias:
+    """
+    Defines an Alias object which deals with duplicate names of players in
+    different tournaments. For instance, if a player makes multiple accounts with
+    the same name after forgetting their password (very common!), the Alias object can track these
+    different accounts and link them to the same person. In addition, if a person uses 
+    a different name through different tournaments, the Alias object can keep track of
+    this also.
+    
+    In order to merge two tournamentsoftware accounts belonging to the same person
+    manually, you need to write both full names used in both accounts and the link to
+    both accounts in the same row in alias.csv.
+    
+    For instance write in any row in alias.csv:
+    Jane Doe, www.tournamentsoftware.com/2342342/233, Jane FemaleDeer, www.tournamentsoftware.com/2342342/234
+    
+    The first column down alias.csv corresponds to the default (used) name for every player.
+    """
     def __init__(self, filename='alias.csv'):
         if os.path.exists(filename):
-            self.aliases = pd.read_csv(filename)
+            self.aliases = pd.read_csv(filename,header=None,index_col=False)
             
         else:
             self.aliases = pd.DataFrame()
+    def add_alias(self,name,currendid=None):
+    
+    def case_insensitive_search(df, term):
+        """
+        Searches a Pandas dataframe for a string insensitive of case
+        and returns the row number corresponding to the location of the string
+        """
+        df_lower = pd.DataFrame(np.array([df[i].str.lower() for i in df])).T
+        return (df_lower == term.lower()).any(axis=1).idxmax(axis=0)
 
-        
-    def get_defaultname(currentid,name = None):
-        pass
-    def get_defaultid(name,currentid = None):
-        pass
+    def get_defaultname(self, currentid,name = None):
+        rownum = case_insensitive_search(df=self.aliases,term=currentid)
+        return self.aliases[0].iloc[rownum]
+    def get_defaultid(self, name,currentid = None):
+        rownum = case_insensitive_search(df=self.aliases,term=name)
+        return self.aliases[1].iloc[rownum]
 #define a function to replace the nth occurence of a substring in a string
 def nth_repl(s, sub, repl, nth):
     find = s.find(sub)
