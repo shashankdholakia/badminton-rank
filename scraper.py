@@ -37,15 +37,20 @@ class Alias:
         else:
             self.aliases = pd.DataFrame()
     def add_alias(self,name,currendid=None):
-    
+        pass
     def case_insensitive_search(df, term):
         """
         Searches a Pandas dataframe for a string insensitive of case
         and returns the row number corresponding to the location of the string
+        
+        Returns -1 if not found
         """
         df_lower = pd.DataFrame(np.array([df[i].str.lower() for i in df])).T
-        return (df_lower == term.lower()).any(axis=1).idxmax(axis=0)
-
+        if (df_lower == term.lower()).all().all() == False:
+            return -1
+        else:
+            return (df_lower == term.lower()).any(axis=1).idxmax(axis=0)
+    
     def get_defaultname(self, currentid,name = None):
         rownum = case_insensitive_search(df=self.aliases,term=currentid)
         return self.aliases[0].iloc[rownum]
