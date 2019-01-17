@@ -32,39 +32,62 @@ class Alias:
     """
     def __init__(self, filename='alias.csv'):
         if os.path.exists(filename):
-            self.aliases = pd.read_csv(filename,header=None,index_col=False)
-            
+            self.aliases = read_csv(filename)
+
         else:
-            self.aliases = pd.DataFrame()
+            self.aliases = []
             
-    def add_alias(self,name,currendid=None):
-        namerow = case_insensitive_search(self.aliases,name)
-        currentidrow = case_insensitive_search(self.aliases,currentid)
+    def read_csv(self,filename):
+        with open(filename, 'rU') as f:  #opens PW file
+            reader = csv.reader(f)
+            data = list(list(row) for row in csv.reader(f, delimiter=',')) #reads csv into a list of lists
+            f.close() #close the csv
+            return data
+        
+    def dump_csv(self,filename):
+        with open (filename,'wb') as f:
+            wtr = csv.writer(f)
+            for row in self.aliases
+                wtr.writerow(row)
+                
+    def add_alias(self,name,currendid):
+        namerow = case_insensitive_search(name)
+        currentidrow = case_insensitive_search(currentid)
         if currentidrow != -1:
-            return None
-        if namerow != -1:
-            #add currentid to end column at namerow
+            #this means the id is already in the alias.csv file, so this account already is known
+            if namerow = -1:
+            #in case the account url is in the aliases but not the name, add the name
+                self.aliases[currentidrow].append(name)
+        else:
+            #check to see if the same name exists somewhere in the aliases file
+            if namerow !=1:
+                self.aliases[namerow].append(currentid)
+            else:
+                self.aliases.append([name,currentid])
            
             
-    def case_insensitive_search(df, term):
+    def case_insensitive_search(self, term):
         """
-        Searches a Pandas dataframe for a string insensitive of case
+        Searches a list of lists for a string insensitive of case
         and returns the row number corresponding to the location of the string
         
         Returns -1 if not found
         """
-        df_lower = pd.DataFrame(np.array([df[i].str.lower() for i in df])).T
-        if (df_lower == term.lower()).all().all() == False:
-            return -1
-        else:
-            return (df_lower == term.lower()).any(axis=1).idxmax(axis=0)
+        for index,row in enumerate(self.aliases):
+            for name in self.aliases:
+                if name.lower() == term.lower():
+                    return index
+        return -1
     
     def get_defaultname(self, currentid,name = None):
-        rownum = case_insensitive_search(df=self.aliases,term=currentid)
-        return self.aliases[0].iloc[rownum]
+        rownum = case_insensitive_search(term=currentid)
+        return self.aliases[rownum][0]
+    
     def get_defaultid(self, name,currentid = None):
-        rownum = case_insensitive_search(df=self.aliases,term=name)
-        return self.aliases[1].iloc[rownum]
+        rownum = case_insensitive_search(term=name)
+        return self.aliases[rownum][1]
+    
+    
 #define a function to replace the nth occurence of a substring in a string
 def nth_repl(s, sub, repl, nth):
     find = s.find(sub)
