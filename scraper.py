@@ -36,8 +36,16 @@ class Alias:
             
         else:
             self.aliases = pd.DataFrame()
+            
     def add_alias(self,name,currendid=None):
-        pass
+        namerow = case_insensitive_search(self.aliases,name)
+        currentidrow = case_insensitive_search(self.aliases,currentid)
+        if currentidrow != -1:
+            return None
+        if namerow != -1:
+            #add currentid to end column at namerow
+           
+            
     def case_insensitive_search(df, term):
         """
         Searches a Pandas dataframe for a string insensitive of case
