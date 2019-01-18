@@ -32,38 +32,40 @@ class Alias:
     """
     def __init__(self, filename='alias.csv'):
         if os.path.exists(filename):
-            self.aliases = read_csv(filename)
+            self.aliases = self.read_csv(filename)
 
         else:
             self.aliases = []
+            self.dump_csv(filename)
             
-    def read_csv(self,filename):
+            
+    def read_csv(self,filename='alias.csv'):
         with open(filename, 'rU') as f:  #opens PW file
-            reader = csv.reader(f)
             data = list(list(row) for row in csv.reader(f, delimiter=',')) #reads csv into a list of lists
             f.close() #close the csv
-            return data
-        
-    def dump_csv(self,filename):
-        with open (filename,'wb') as f:
+            self.aliases = data
+    
+    def dump_csv(self,filename='alias.csv'):
+        with open (filename,'w') as f:
             wtr = csv.writer(f)
-            for row in self.aliases
+            for row in self.aliases:
                 wtr.writerow(row)
                 
-    def add_alias(self,name,currendid):
-        namerow = case_insensitive_search(name)
-        currentidrow = case_insensitive_search(currentid)
+    def add_alias(self,name,currentid):
+        namerow = self.case_insensitive_search(name)
+        currentidrow = self.case_insensitive_search(currentid)
         if currentidrow != -1:
             #this means the id is already in the alias.csv file, so this account already is known
-            if namerow = -1:
+            if namerow == -1:
             #in case the account url is in the aliases but not the name, add the name
                 self.aliases[currentidrow].append(name)
         else:
             #check to see if the same name exists somewhere in the aliases file
-            if namerow !=1:
+            if namerow !=-1:
                 self.aliases[namerow].append(currentid)
             else:
                 self.aliases.append([name,currentid])
+        self.dump_csv()
            
             
     def case_insensitive_search(self, term):
@@ -74,17 +76,20 @@ class Alias:
         Returns -1 if not found
         """
         for index,row in enumerate(self.aliases):
-            for name in self.aliases:
+            for name in row:
                 if name.lower() == term.lower():
                     return index
         return -1
     
-    def get_defaultname(self, currentid,name = None):
-        rownum = case_insensitive_search(term=currentid)
-        return self.aliases[rownum][0]
+    def get_default_name(self, currentid,name = None):
+        rownum = self.case_insensitive_search(term=currentid)
+        if rownum !=-1:
+            return self.aliases[rownum][0]
+        else:
+            raise IndexError("No such ID exists")
     
-    def get_defaultid(self, name,currentid = None):
-        rownum = case_insensitive_search(term=name)
+    def get_default_id(self, name,currentid = None):
+        rownum = self.case_insensitive_search(term=name)
         return self.aliases[rownum][1]
     
     

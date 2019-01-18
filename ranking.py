@@ -1,4 +1,3 @@
-import os
 from trueskill import Rating, rate_1vs1
 from collections import OrderedDict
 import pandas
@@ -8,6 +7,7 @@ import math
 import numpy as np
 from scipy.special import ndtri
 from scraper import scraper
+from scraper import Alias
 
 
 class Ranking:
@@ -236,33 +236,52 @@ def main():
         playerlinks.update(tournamentdata["Player links"])
         singlesresults = tournamentdata["Singles results"]
         doublesresults = tournamentdata["Doubles results"]
+        
+        aliases = Alias()
+        aliases.read_csv()
 
         #match is the results for a singles match
         for header,match in singlesresults.iterrows():
             #match[0] is player1
-            if (match[0] not in r.ratings):
-                r.addPlayer(match[0])
+            aliases.add_alias(name=playerlinks[match[0]],currentid=match[0])
+            aliases.add_alias(name=playerlinks[match[1]],currentid=match[1])
+            
+            player1 = aliases.get_default_name(currentid=match[0])
+            player2 = aliases.get_default_name(currentid=match[1])
+            
+            if (player1 not in r.ratings):
+                r.addPlayer(player1)
             #match[1] is player2
-            if (match[1] not in r.ratings):
-                r.addPlayer(match[1])
-            r.playSingles(match[0],match[1])
+            if (player2 not in r.ratings):
+                r.addPlayer(player2)
+            r.playSingles(player1,player2)
+            
+        
         
         for header,match in doublesresults.iterrows():
-            if (match[0] not in r.ratings):
-                r.addPlayer(match[0])
-            if (match[1] not in r.ratings):
-                r.addPlayer(match[1])
-            if (match[2] not in r.ratings):
-                r.addPlayer(match[2])
-            if (match[3] not in r.ratings):
-                r.addPlayer(match[3])
-            r.playDoubles(match[0],match[1],match[2],match[3])
+            
+            aliases.add_alias(name=playerlinks[match[0]],currentid=match[0])
+            aliases.add_alias(name=playerlinks[match[1]],currentid=match[1])
+            aliases.add_alias(name=playerlinks[match[2]],currentid=match[2])
+            aliases.add_alias(name=playerlinks[match[3]],currentid=match[3])
+            
+            player1 = aliases.get_default_name(currentid=match[0])
+            player2 = aliases.get_default_name(currentid=match[1])
+            player3 = aliases.get_default_name(currentid=match[2])
+            player4 = aliases.get_default_name(currentid=match[3])
+            
+            if (player1 not in r.ratings):
+                r.addPlayer(player1)
+            if (player2 not in r.ratings):
+                r.addPlayer(player2)
+            if (player3 not in r.ratings):
+                r.addPlayer(player3)
+            if (player4 not in r.ratings):
+                r.addPlayer(player4)
+            r.playDoubles(player1,player2,player3,player4)
 
         leaderboard = r.get_leaderboard()
         leaderboard_names = leaderboard
-        for index,value in leaderboard.iterrows():
-            if index in playerlinks.keys():
-                leaderboard_names = leaderboard_names.rename(playerlinks)
         leaderboard_names.to_csv('ranking.csv')
         print(leaderboard_names)
 #if running this code itself, find and print the rankings
