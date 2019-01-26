@@ -29,7 +29,7 @@ class Ranking:
         return pandas.DataFrame.from_items(Ratings_sorted_by_value.items(),["Average","95% CI"], orient='index')
 
     #update to run and read in data from scraper
-    def readCSV(filename):
+    def readCSV(self,filename):
         games=[]
         
         with open(filename) as csvfile:
