@@ -1,0 +1,94 @@
+AXD name,AXD skill
+"['Shuhei Ono', 'Sarah Chan']",38.471555785114866
+"['Nathan He', 'Bianca Tam']",45.2325976307861
+"['Anthony Chu', 'Fiona Lai']",50.93086505273632
+"['Cj Cullen', 'Martina Reyes']",51.70082664253098
+"['Johnny Vu', 'Vicky Hoang']",53.87235945171313
+"['Gumaro Diaz', 'Jessica zi-yun Wang']",57.617955652933524
+"['Sean(Hsi) Chen', 'Lydia Li']",58.88853204878016
+"['Christopher Ho', 'Ivy Xie']",60.642182920277776
+"['Calvin Dai', 'Maya Chen']",61.59960897266226
+"['Sudhanshu Singhal', 'Gauri Ajit Ghate']",64.33662323040916
+"['Kyle Jordan Emerick', 'Chinue De La Merced']",66.37634767952642
+,
+BXD name,BXD skill
+"['Joshua Lea', 'Emerald Doan']",24.947277716102697
+"['Easton Cullen', 'Leilani Xinyue Lu']",28.564910603615658
+"['Boyang Robert Hu', 'Mayu Namba']",35.37709320220033
+"['Carter Tong', 'Anh Pham']",35.9896075125297
+"['Andre Alvarez', 'Georgina C']",38.21888382360517
+"['Alohi Sheung', 'Jessica Rose Lin']",44.269998293757105
+"['Alex Chang', 'Helen Weidemann']",48.261746408708795
+"['Allen Yau', 'Amber Low']",49.42950660505986
+"['Anthony Chu', 'Fiona Lai']",50.93086505273632
+"['Cj Cullen', 'Martina Reyes']",51.70082664253098
+"['Johnny Vu', 'Vicky Hoang']",53.87235945171313
+"['Ethan Chuang', 'Joanne Chan']",54.05965659904532
+"['Jerry Lam', 'Mindy Tran Dinh']",56.766395267985715
+"['Gumaro Diaz', 'Jessica zi-yun Wang']",57.617955652933524
+"['Sean(Hsi) Chen', 'Lydia Li']",58.88853204878016
+"['Van Hoang Pham', 'Sara Chan']",59.695519374232155
+"['Christopher Ho', 'Ivy Xie']",60.642182920277776
+"['Martin Mitchel', 'Chi Lao']",61.36442167616664
+"['Alexander Zheng', 'Carleen Li']",64.89252847481075
+,
+CXD name,CXD skill
+"['Aster Chun', 'Allison Bao']",16.668000000000003
+"['Brian Hien Nguyen', 'Julia Ni']",17.117506600955746
+"['Winston ChowFun Tang', 'Salina Tang']",18.120264905186914
+"['Joshua Lea', 'Emerald Doan']",24.947277716102697
+"['Zfeng Loo', 'Steffi Ling']",27.781385984520234
+"['Easton Cullen', 'Leilani Xinyue Lu']",28.564910603615658
+"['Vivan Sinha', 'Mae Adachi Stamm']",29.50810791384247
+"['Zach Leung', 'Nicole Chi Cheng']",29.538794988909963
+"['Eric Wong', 'Delphine Ho']",30.896590278795195
+"['Danny Shum', 'Ninna Rones']",31.29958161633967
+"['Bharath Krishnakumar', 'Steff Cheung']",31.81593996297059
+"['Riad HOSSAIN', 'Joanne Chak']",33.077760780184505
+"['Jayden Su', 'Cody Chen']",33.4195769765205
+"['Clement Hoang', 'Sydney Erin Woo']",34.579167865363246
+"['Joseph Taein Kim', 'Jakin Lin']",34.62402611381774
+"['Boyang Robert Hu', 'Mayu Namba']",35.37709320220033
+"['Andre Alvarez', 'Georgina C']",38.21888382360517
+"['Lawrence Chen', 'Joyce Cheung']",38.933139072550254
+"['Liang Qu', 'Sarah Thaw']",41.80168727467901
+"['Nero Chen', 'Linda Li']",43.356185237260945
+"['Kittu Katakam', 'Daphne Huang']",43.37670140317033
+"['Leo Lam', 'Winsey Kwan']",43.54280474102104
+"['Alex Chang', 'Helen Weidemann']",48.261746408708795
+"['Allen Yau', 'Amber Low']",49.42950660505986
+"['Tony Lau', 'Agnes Wong']",53.32580720055515
+"['Josh Buag Serrano', 'Bianca Wibisono']",53.443847468423094
+"['Ethan Chuang', 'Joanne Chan']",54.05965659904532
+"['Jerry Lam', 'Mindy Tran Dinh']",56.766395267985715
+"['Van Hoang Pham', 'Sara Chan']",59.695519374232155
+"['Martin Mitchel', 'Chi Lao']",61.36442167616664
+,
+DXD name,DXD skill
+"['Aster Chun', 'Allison Bao']",16.668000000000003
+"['Brian Hien Nguyen', 'Julia Ni']",17.117506600955746
+"['Stanley Huang', 'Vivian Nguyen']",19.175395887739455
+"['Yujie FENG', 'Tinnie Situ']",27.300831636436833
+"['John Do', 'Evelyn Tan']",27.56083463354254
+"['Sebastian Podiono', 'Helen Fu']",28.975843473871997
+"['Vivan Sinha', 'Mae Adachi Stamm']",29.50810791384247
+"['Zach Leung', 'Nicole Chi Cheng']",29.538794988909963
+"['Eric Wong', 'Delphine Ho']",30.896590278795195
+"['Danny Shum', 'Ninna Rones']",31.29958161633967
+"['Bharath Krishnakumar', 'Steff Cheung']",31.81593996297059
+"['Ronald Fong', 'Arielle Fong']",33.030667617962365
+"['Riad HOSSAIN', 'Joanne Chak']",33.077760780184505
+"['Jayden Su', 'Cody Chen']",33.4195769765205
+"['Clement Hoang', 'Sydney Erin Woo']",34.579167865363246
+"['Kenny Liang', 'Betty Yang']",34.79618680839589
+"['Lawrence Chen', 'Joyce Cheung']",38.933139072550254
+"['Henry Ma', 'Tiffany Lui']",39.85605723705702
+"['Rehaan Patel', 'Kailee Nieltawee']",41.310090563990684
+"['Liang Qu', 'Sarah Thaw']",41.80168727467901
+"['Thai Hoang Luong', 'Jasmine La']",42.25468640685733
+"['Felix Lieu', 'Ngoc Truong']",43.02822023661814
+"['Nero Chen', 'Linda Li']",43.356185237260945
+"['Leo Lam', 'Winsey Kwan']",43.54280474102104
+"['Ryan Phan', 'Steffi Ling']",46.16866590406168
+"['Daniel Wong', 'Allison Rong']",46.81286695513881
+"['Tony Lau', 'Agnes Wong']",53.32580720055515

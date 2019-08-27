@@ -1,0 +1,114 @@
+AMD name,AMD skill
+"['David Cheng', 'Hungshi Lin']",16.668000000000003
+"['Chris Ou', 'Jiahao Sun']",40.82011599939345
+"['Kyle Jordan Emerick', 'Tuan La']",41.632199501590065
+"['Stephen Chiu', 'Andy Lam']",58.93930915470038
+"['William Cheung', 'Jarold Cordero']",59.82035403776618
+"['Johnny Vu', 'Steven Yang']",62.16715599857712
+,
+BMD name,BMD skill
+"['Jiankang Cao', 'Tengyue Ren']",12.357655665028371
+"['David Cheng', 'Hungshi Lin']",16.668000000000003
+"['Winston ChowFun Tang', 'Ryan Wang']",23.957672307897127
+"['Shrayus Gupta', 'Richard Nguyen']",26.551499601678987
+"['Ethan Chuang', 'Ryan Tseng']",39.301938710626935
+"['John Lau', 'Joshua Lea']",39.550480545312126
+"['Chris Ou', 'Jiahao Sun']",40.82011599939345
+"['Alex Chang', 'Arnav Taneja']",43.646539649520484
+"['Anthony Chu', 'Byron Li']",45.45272308648484
+"['Lakshmi Chaladi', 'Harsha Perannagari']",49.782927899557535
+"['Boyang Robert Hu', 'Deepak Talwar']",50.083624054245504
+"['James Hein', 'Arjun Loganathan']",51.45308659573421
+"['Martin Mitchel', 'Marc Rusli']",53.23461206992673
+"['Anjo Gabriel Cordero', 'Johnjo Riguera']",53.88776357941182
+"['Andre Alvarez', 'Douglas La']",58.79690614655622
+"['Nicholas Ho', 'Kevin Zhou']",58.815748731683655
+"['Stephen Chiu', 'Andy Lam']",58.93930915470038
+"['Johnny Vu', 'Steven Yang']",62.16715599857712
+"['Daniel Guo', 'Van Hoang Pham']",62.4424841075438
+"['Jerry Lam', 'Josh Buag Serrano']",63.35044827817053
+,
+CMD name,CMD skill
+"['Victor Shi', 'Joey Situ']",10.36919920856582
+"['Luis Montoya', 'Lada Yang']",15.171296489277115
+"['Tsun Him LAM', 'Tsun Wang LAM']",16.25403176677323
+"['Anh Nguyen', 'Liang Qu']",16.668000000000003
+"['Austin Chang', 'Joshua Huang']",16.668000000000003
+"['John Do', 'Shiva Sridar']",16.668000000000003
+"['Zhaoyuan Liang', 'Yonghui Luo']",16.668000000000003
+"['Easton Cullen', 'Jason Ho']",17.94341150434726
+"['Aster Chun', 'Rj Lee']",21.75486420655156
+"['Wenjun Shen', 'Kok Jie Soo']",23.233333068173387
+"['Winston ChowFun Tang', 'Ryan Wang']",23.957672307897127
+"['Min Lin', 'Stephen Yang']",24.54945317751754
+"['Wei Liang Chua', 'Frank Ye']",24.648231250962525
+"['Darren Lin', 'Lakshya Rajpal']",25.113303040336877
+"['Jesse Brown', 'David Zhou']",26.381445348465313
+"['Clement Hoang', 'Tianshi Ning']",28.510534574650034
+"['Brendan Le Dinh', 'Brian Hien Nguyen']",28.723951712666807
+"['Ivan Ho', 'Yuyang Zhou']",29.288411176480345
+"['Vivan Sinha', 'Issey Sone']",29.50810791384247
+"['Bryce Chao', 'Felix Pan']",31.204258537451235
+"['Nareauphol Liu', 'Prom Putthisri']",31.398993078221952
+"['Alex Chang', 'Ian Yu-Hung Tseng']",34.28298171777645
+"['Koty Chen', 'Cote Feldsine']",36.92934584958319
+"['Eric Li', 'Bryant Xu']",37.39847667358753
+"['Ethan Chuang', 'Ryan Tseng']",39.301938710626935
+"['Nicholas Joseph Jiang', 'Zach Leung']",39.47797623732097
+"['John Lau', 'Joshua Lea']",39.550480545312126
+"['Justin Pj Lee', 'Austin Tsang']",39.92776944435991
+"['Anthony Ha', 'Tam Vo']",40.31499126900196
+"['Edward Ding', 'Alex Zhang']",41.55898823228894
+"['Leo Chun', 'Danny Mok']",42.2638433850346
+"['Paco He', 'Danny Shum']",42.39164137528555
+"['Thai Hoang Luong', 'Bryant Zhang']",42.787328595350616
+"['Alex Chang', 'Arnav Taneja']",43.646539649520484
+"['Anthony Chu', 'Byron Li']",45.45272308648484
+"['Rehaan Patel', 'Akhil Saranath']",45.69536763554899
+"['Shashank Dholakia', 'Shishir Dholakia']",47.63817229500318
+"['Lakshmi Chaladi', 'Harsha Perannagari']",49.782927899557535
+"['Boyang Robert Hu', 'Deepak Talwar']",50.083624054245504
+"['James Hein', 'Arjun Loganathan']",51.45308659573421
+"['Anjo Gabriel Cordero', 'Johnjo Riguera']",53.88776357941182
+"['Andre Alvarez', 'Douglas La']",58.79690614655622
+"['Nicholas Ho', 'Kevin Zhou']",58.815748731683655
+"['Daniel Guo', 'Van Hoang Pham']",62.4424841075438
+"['Jerry Lam', 'Josh Buag Serrano']",63.35044827817053
+,
+DMD name,DMD skill
+"['Victor Shi', 'Joey Situ']",10.36919920856582
+"['Luis Montoya', 'Lada Yang']",15.171296489277115
+"['Tsun Him LAM', 'Tsun Wang LAM']",16.25403176677323
+"['Anh Nguyen', 'Liang Qu']",16.668000000000003
+"['Austin Chang', 'Joshua Huang']",16.668000000000003
+"['John Do', 'Shiva Sridar']",16.668000000000003
+"['Joshua J Alexander', 'Issey Sone']",16.668000000000003
+"['Robin Hu', 'Wilbur Shi']",16.668000000000003
+"['Zhaoyuan Liang', 'Yonghui Luo']",16.668000000000003
+"['Kameran Hossain', 'Tiamron Nieltawee']",19.801397645373946
+"['Sebastian Podiono', 'Vincenzio Widjaja']",21.208265084349232
+"['Aster Chun', 'Rj Lee']",21.75486420655156
+"['Kevin Yu', 'Joey Zhuang']",23.15067086585398
+"['Wenjun Shen', 'Kok Jie Soo']",23.233333068173387
+"['Min Lin', 'Stephen Yang']",24.54945317751754
+"['Darren Lin', 'Lakshya Rajpal']",25.113303040336877
+"['Jesse Brown', 'David Zhou']",26.381445348465313
+"['Clement Hoang', 'Tianshi Ning']",28.510534574650034
+"['Brendan Le Dinh', 'Brian Hien Nguyen']",28.723951712666807
+"['Ivan Ho', 'Yuyang Zhou']",29.288411176480345
+"['Kenny Liang', 'Frank Ye']",30.505939305077167
+"['Bryce Chao', 'Felix Pan']",31.204258537451235
+"['Nareauphol Liu', 'Prom Putthisri']",31.398993078221952
+"['Alex Chang', 'Ian Yu-Hung Tseng']",34.28298171777645
+"['Koty Chen', 'Cote Feldsine']",36.92934584958319
+"['Bryan LEUNG', 'Nhat Ton']",37.21668145703749
+"['Eric Li', 'Bryant Xu']",37.39847667358753
+"['Nicholas Joseph Jiang', 'Zach Leung']",39.47797623732097
+"['Justin Pj Lee', 'Austin Tsang']",39.92776944435991
+"['Anthony Ha', 'Tam Vo']",40.31499126900196
+"['Edward Ding', 'Alex Zhang']",41.55898823228894
+"['Leo Chun', 'Danny Mok']",42.2638433850346
+"['Paco He', 'Danny Shum']",42.39164137528555
+"['Thai Hoang Luong', 'Bryant Zhang']",42.787328595350616
+"['Rehaan Patel', 'Akhil Saranath']",45.69536763554899
+"['Shashank Dholakia', 'Shishir Dholakia']",47.63817229500318

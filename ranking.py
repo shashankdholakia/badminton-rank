@@ -243,11 +243,11 @@ def main():
         #match is the results for a singles match
         for header,match in singlesresults.iterrows():
             #match[0] is player1
-            aliases.add_alias(name=playerlinks[match[0]],currentid=match[0])
-            aliases.add_alias(name=playerlinks[match[1]],currentid=match[1])
+            aliases.add_alias(name=playerlinks[match['Winner']],currentid=match['Winner'])
+            aliases.add_alias(name=playerlinks[match['Loser']],currentid=match['Loser'])
             
-            player1 = aliases.get_default_name(currentid=match[0])
-            player2 = aliases.get_default_name(currentid=match[1])
+            player1 = aliases.get_default_name(currentid=match['Winner'])
+            player2 = aliases.get_default_name(currentid=match['Loser'])
             
             if (player1 not in r.ratings):
                 r.addPlayer(player1)
@@ -260,15 +260,15 @@ def main():
         
         for header,match in doublesresults.iterrows():
             
-            aliases.add_alias(name=playerlinks[match[0]],currentid=match[0])
-            aliases.add_alias(name=playerlinks[match[1]],currentid=match[1])
-            aliases.add_alias(name=playerlinks[match[2]],currentid=match[2])
-            aliases.add_alias(name=playerlinks[match[3]],currentid=match[3])
+            aliases.add_alias(name=playerlinks[match['Winner1']],currentid=match['Winner1'])
+            aliases.add_alias(name=playerlinks[match['Winner2']],currentid=match['Winner2'])
+            aliases.add_alias(name=playerlinks[match['Loser1']],currentid=match['Loser1'])
+            aliases.add_alias(name=playerlinks[match['Loser2']],currentid=match['Loser2'])
             
-            player1 = aliases.get_default_name(currentid=match[0])
-            player2 = aliases.get_default_name(currentid=match[1])
-            player3 = aliases.get_default_name(currentid=match[2])
-            player4 = aliases.get_default_name(currentid=match[3])
+            player1 = aliases.get_default_name(currentid=match['Winner1'])
+            player2 = aliases.get_default_name(currentid=match['Winner2'])
+            player3 = aliases.get_default_name(currentid=match['Loser1'])
+            player4 = aliases.get_default_name(currentid=match['Loser2'])
             
             if (player1 not in r.ratings):
                 r.addPlayer(player1)

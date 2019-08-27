@@ -90,7 +90,10 @@ class Alias:
     
     def get_default_id(self, name,currentid = None):
         rownum = self.case_insensitive_search(term=name)
-        return self.aliases[rownum][1]
+        if rownum !=-1:
+            return self.aliases[rownum][1]
+        else:
+            raise IndexError("No such ID exists")
     
     
 #define a function to replace the nth occurence of a substring in a string
@@ -222,7 +225,6 @@ def scraper(tournamentlink):
                     #the player profile link has already been accessed, no need to access it again
                     else:
                         list_of_matches.append(variantlinks[line.get('href')])
-                        
             for i,line in enumerate(list_of_matches):
                 if "draw=" in line:
                     try:

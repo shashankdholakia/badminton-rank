@@ -4,6 +4,22 @@
 Created on Sat Jan 26 22:10:18 2019
 
 @author: shashank
+
+Takes a list of entries into a tournament you are running as:
+ams.csv
+amd.csv
+awd.csv
+axd.csv
+bms.csv
+etc.
+
+and uses the rankings from the ranking.csv file to rank every entry in each 
+bracket against each other. Outputs plots and a CSV with the data to 
+sandbagging/--.csv where -- is the name of the bracket (eg. MD, WD, etc.)
+
+The outputs of this code are the end goal to help tournament directors remove
+players who are sandbagging--we can see if any players are outliers in skill in 
+their bracket.
 """
 
 import pandas as pd
@@ -14,6 +30,8 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import csv
+
+
 
 def get_skills(leaderboard,event,height,exclude_errors=False):
     
@@ -130,7 +148,7 @@ def get_skills_singles(leaderboard,event,height,exclude_errors=False):
         haven't yet signed up
     if exclude_errors is assume partner:
         this assumes that if a player is not in the standings, that player
-        has the same skill level as his partner, but with the default STD DEV
+        has the same skill level as his/her partner, but with the default STD DEV
     """
     aliases = Alias()
     aliases.read_csv()
@@ -185,10 +203,10 @@ def get_skills_singles(leaderboard,event,height,exclude_errors=False):
             
             
 leaderboard = pd.read_csv("ranking.csv")
-amd = pd.read_csv("amd.csv",names=['Number','player'])
-bmd = pd.read_csv("bmd.csv",names=['Number','player'])
-cmd = pd.read_csv("cmd.csv",names=['Number','player'])
-dmd = pd.read_csv("dmd.csv",names=['Number','player'])
+amd = pd.read_csv("sandbagging/amd.csv",names=['Number','player'])
+bmd = pd.read_csv("sandbagging/bmd.csv",names=['Number','player'])
+cmd = pd.read_csv("sandbagging/cmd.csv",names=['Number','player'])
+dmd = pd.read_csv("sandbagging/dmd.csv",names=['Number','player'])
 CS_skill_amd,CS_players_amd,ones_amd,not_in_rankings_amd = get_skills(leaderboard,amd,3,exclude_errors='assume partner')
 CS_skill_bmd,CS_players_bmd,ones_bmd,not_in_rankings_bmd = get_skills(leaderboard,bmd,2,exclude_errors='assume partner')
 CS_skill_cmd,CS_players_cmd,ones_cmd,not_in_rankings_cmd = get_skills(leaderboard,cmd,1,exclude_errors='assume partner')
@@ -209,7 +227,7 @@ print(CS_players_dmd,CS_skill_dmd)
 print(' ')
 print(set(not_in_rankings_amd)|set(not_in_rankings_bmd)|set(not_in_rankings_cmd)|set(not_in_rankings_dmd))
 
-with open('MD.csv', 'wb') as csvfile:
+with open('sandbagging/MD.csv', 'w') as csvfile:
     spamreader = csv.writer(csvfile, delimiter=',')
     spamreader.writerow(['AMD name','AMD skill'])
     for name,skill in zip(CS_players_amd,CS_skill_amd):
@@ -235,12 +253,13 @@ plt.scatter(CS_skill_dmd,ones_dmd,label='DMD')
 plt.xlabel('Minimum Likely Skill (95% Confidence)')
 plt.yticks([])
 plt.legend()
-plt.savefig('MD.png')
+plt.title('MD')
+plt.savefig('sandbagging/MD.png')
 
-axd = pd.read_csv("axd.csv",names=['Number','player'])
-bxd = pd.read_csv("bxd.csv",names=['Number','player'])
-cxd = pd.read_csv("cxd.csv",names=['Number','player'])
-dxd = pd.read_csv("dxd.csv",names=['Number','player'])
+axd = pd.read_csv("sandbagging/axd.csv",names=['Number','player'])
+bxd = pd.read_csv("sandbagging/bxd.csv",names=['Number','player'])
+cxd = pd.read_csv("sandbagging/cxd.csv",names=['Number','player'])
+dxd = pd.read_csv("sandbagging/dxd.csv",names=['Number','player'])
 
 CS_skill_axd,CS_players_axd,ones_axd,not_in_rankings_axd = get_skills(leaderboard,axd,3,exclude_errors='assume partner')
 CS_skill_bxd,CS_players_bxd,ones_bxd,not_in_rankings_bxd = get_skills(leaderboard,bxd,2,exclude_errors='assume partner')
@@ -258,7 +277,8 @@ plt.scatter(CS_skill_dxd,ones_dxd,label='DXD')
 plt.xlabel('Minimum Likely Skill (95% Confidence)')
 plt.yticks([])
 plt.legend()
-plt.savefig('MX.png')
+plt.title('MX')
+plt.savefig('sandbagging/MX.png')
 
 print(CS_players_axd,CS_skill_axd)
 print(' ')
@@ -269,8 +289,8 @@ print(' ')
 print(CS_players_dxd,CS_skill_dxd)
 print(' ')
 print(set(not_in_rankings_axd)|set(not_in_rankings_bxd)|set(not_in_rankings_cxd)|set(not_in_rankings_dxd))
-with open('MX.csv', 'wb') as csvfile:
-    spamreader = csv.writer(csvfile, delimiter=',')
+with open('sandbagging/MX.csv', 'w') as csvfile:
+    spamreader = csv.writer(csvfile,delimiter=',')
     spamreader.writerow(['AXD name','AXD skill'])
     for name,skill in zip(CS_players_axd,CS_skill_axd):
         spamreader.writerow([name,skill])
@@ -287,10 +307,10 @@ with open('MX.csv', 'wb') as csvfile:
     for name,skill in zip(CS_players_dxd,CS_skill_dxd):
         spamreader.writerow([name,skill])
 
-awd = pd.read_csv("awd.csv",names=['Number','player'])
-bwd = pd.read_csv("bwd.csv",names=['Number','player'])
-cwd = pd.read_csv("cwd.csv",names=['Number','player'])
-dwd = pd.read_csv("dwd.csv",names=['Number','player'])
+awd = pd.read_csv("sandbagging/awd.csv",names=['Number','player'])
+bwd = pd.read_csv("sandbagging/bwd.csv",names=['Number','player'])
+cwd = pd.read_csv("sandbagging/cwd.csv",names=['Number','player'])
+dwd = pd.read_csv("sandbagging/dwd.csv",names=['Number','player'])
 
 CS_skill_awd,CS_players_awd,ones_awd,not_in_rankings_awd = get_skills(leaderboard,awd,3,exclude_errors='assume partner')
 CS_skill_bwd,CS_players_bwd,ones_bwd,not_in_rankings_bwd = get_skills(leaderboard,bwd,2,exclude_errors='assume partner')
@@ -308,7 +328,8 @@ plt.scatter(CS_skill_dwd,ones_dwd,label='DWD')
 plt.xlabel('Minimum Likely Skill (95% Confidence)')
 plt.yticks([])
 plt.legend()
-plt.savefig('WD.png')
+plt.title('WD')
+plt.savefig('sandbagging/WD.png')
 
 print(CS_players_awd,CS_skill_awd)
 print(' ')
@@ -320,8 +341,8 @@ print(CS_players_dwd,CS_skill_dwd)
 print(' ')
 print(set(not_in_rankings_awd)|set(not_in_rankings_bwd)|set(not_in_rankings_cwd)|set(not_in_rankings_dwd))
 
-with open('WD.csv', 'wb') as csvfile:
-    spamreader = csv.writer(csvfile, delimiter=',')
+with open('sandbagging/WD.csv', 'w') as csvfile:
+    spamreader = csv.writer(csvfile,delimiter=',')
     spamreader.writerow(['AWD name','AWD skill'])
     for name,skill in zip(CS_players_awd,CS_skill_awd):
         spamreader.writerow([name,skill])
@@ -338,9 +359,9 @@ with open('WD.csv', 'wb') as csvfile:
     for name,skill in zip(CS_players_dwd,CS_skill_dwd):
         spamreader.writerow([name,skill])
 
-abws = pd.read_csv("abws.csv",names=['Number','player'])
-cws = pd.read_csv("cws.csv",names=['Number','player'])
-dws = pd.read_csv("dws.csv",names=['Number','player'])
+abws = pd.read_csv("sandbagging/abws.csv",names=['Number','player'])
+cws = pd.read_csv("sandbagging/cws.csv",names=['Number','player'])
+dws = pd.read_csv("sandbagging/dws.csv",names=['Number','player'])
 
 CS_skill_abws,CS_players_abws,ones_abws,not_in_rankings_abws = get_skills_singles(leaderboard,abws,2,exclude_errors=True)
 CS_skill_cws,CS_players_cws,ones_cws,not_in_rankings_cws = get_skills_singles(leaderboard,cws,1,exclude_errors=True)
@@ -356,7 +377,8 @@ plt.scatter(CS_skill_dws,ones_dws,label='DWS')
 plt.xlabel('Minimum Likely Skill (95% Confidence)')
 plt.yticks([])
 plt.legend()
-plt.savefig('WS.png')
+plt.title('WS')
+plt.savefig('sandbagging/WS.png')
 
 print(CS_players_abws,CS_skill_abws)
 print(' ')
@@ -366,8 +388,8 @@ print(CS_players_dws,CS_skill_dws)
 print(' ')
 print(set(not_in_rankings_abws)|set(not_in_rankings_cws)|set(not_in_rankings_dws))
 
-with open('WS.csv', 'wb') as csvfile:
-    spamreader = csv.writer(csvfile, delimiter=',')
+with open('sandbagging/WS.csv', 'w') as csvfile:
+    spamreader = csv.writer(csvfile,delimiter=',')
     spamreader.writerow(['ABWS name','ABWS skill'])
     for name,skill in zip(CS_players_abws,CS_skill_abws):
         spamreader.writerow([name,skill])
@@ -379,10 +401,11 @@ with open('WS.csv', 'wb') as csvfile:
     spamreader.writerow(['DWS name','DWS skill'])
     for name,skill in zip(CS_players_dws,CS_skill_dws):
         spamreader.writerow([name,skill])
-ams = pd.read_csv("ams.csv",names=['Number','player'])
-bms = pd.read_csv("bms.csv",names=['Number','player'])
-cms = pd.read_csv("cms.csv",names=['Number','player'])
-dms = pd.read_csv("dms.csv",names=['Number','player'])
+        
+ams = pd.read_csv("sandbagging/ams.csv",names=['Number','player'])
+bms = pd.read_csv("sandbagging/bms.csv",names=['Number','player'])
+cms = pd.read_csv("sandbagging/cms.csv",names=['Number','player'])
+dms = pd.read_csv("sandbagging/dms.csv",names=['Number','player'])
 
 CS_skill_ams,CS_players_ams,ones_ams,not_in_rankings_ams = get_skills_singles(leaderboard,ams,3,exclude_errors=True)
 CS_skill_bms,CS_players_bms,ones_bms,not_in_rankings_bms = get_skills_singles(leaderboard,bms,2,exclude_errors=True)
@@ -400,10 +423,11 @@ plt.scatter(CS_skill_dms,ones_dms,label='DMS')
 plt.xlabel('Minimum Likely Skill (95% Confidence)')
 plt.yticks([])
 plt.legend()
-plt.savefig('MS.png')
+plt.title('MS')
+plt.savefig('sandbagging/MS.png')
 
-with open('MS.csv', 'wb') as csvfile:
-    spamreader = csv.writer(csvfile, delimiter=',')
+with open('sandbagging/MS.csv', 'w') as csvfile:
+    spamreader = csv.writer(csvfile,delimiter=',')
     spamreader.writerow(['AMS name','AMS skill'])
     for name,skill in zip(CS_players_ams,CS_skill_ams):
         spamreader.writerow([name,skill])
