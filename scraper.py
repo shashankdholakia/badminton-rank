@@ -1,6 +1,14 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+Created on Mon Aug 26 23:09:09 2019
+
+@author: shishir
+"""
+
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
 Created on Tue Jan  8 20:19:32 2019
 
 @author: shishir
@@ -90,10 +98,7 @@ class Alias:
     
     def get_default_id(self, name,currentid = None):
         rownum = self.case_insensitive_search(term=name)
-        if rownum !=-1:
-            return self.aliases[rownum][1]
-        else:
-            raise IndexError("No such ID exists")
+        return self.aliases[rownum][1]
     
     
 #define a function to replace the nth occurence of a substring in a string
@@ -156,12 +161,13 @@ def scraper(tournamentlink):
     
     """
     
-    string = 'http://tournamentsoftware.com'
+    string = 'http://tournamentsoftware.com/sport/'
     s = requests.Session() 
     ###gets past the GDPR cookie wall in tournamentsoftware.com
     #note: test on other machines and test after clearing cookies to see if it still works
     s.post(tournamentlink, cookies = {'st': r'l=1033&exp=43841.9228685648&c=1'})
-    matcheslistlink = nth_repl(tournamentlink,'tournament','matches',2)
+    matcheslistlink = nth_repl(tournamentlink,'tournament','draws',2)
+    print(matcheslistlink)
     r = s.get(matcheslistlink)
     html_page = r.content
     soup = BeautifulSoup(html_page, "lxml")
@@ -182,26 +188,84 @@ def scraper(tournamentlink):
     #if not, scrape tournamentsoftware to get the tournament data
     else:
         list_of_matches = []
-        dayslist = []
+        drawslist = []
         #the variant links are the player links that change depending on the tournament
         #basically the variant link links to a players' performance in that tournament
         #but we will want the players' profile link, which does not change from tournament to tournament
         variantlinks = {}
         doubles_df = pd.DataFrame(columns=["Winner1","Winner2", "Loser1","Loser2"])
         singles_df = pd.DataFrame(columns=["Winner","Loser"])
+        #Iterate over every draw, not every draw
         for link in soup.find_all('a'):
-            if '&d=' in link.get('href'):
-                dayslist.append(link.get('href'))
+            if '&draw=' in link.get('href'):
+                drawmatch = nth_repl(link.get('href'),'draw','drawmatches',1)
+                drawslist.append(drawmatch)
+
+                
+        
         playernamedict = {}
         #iterate over every link corresponding to a given tournament day
-        for day in dayslist:
-            #Get an HTML page for one specific day of a tournament
-            r = s.get(string+day)
-            html_page_matchesofthatday = r.content
-            soup = BeautifulSoup(html_page_matchesofthatday, "lxml")
+        for draw in drawslist:
+            print('~~~~~~~~~')
+            #Get an HTML page for one specific day of a tournament            
+            r = s.get(string+draw)
+            html_page_matchesofthatdraw = r.content
+            soup = BeautifulSoup(html_page_matchesofthatdraw, "lxml")
             #iterate over ALL links in that day of the tournament
+            
             #This contains all the matches played that day -- players, draws, etc
+            
+            for line in soup.find_all('tbody'):
+                for tag in line.children:
+                    if tag.name == 'tr':
+                        lst = []
+                        print(tag.name)
+                        for element in tag.find_all('a'):
+                            if "player.aspx" in element.get('href'):
+                                if element.get('href') not in variantlinks.keys():
+                                    r_playerprofile = s.get(string+'/sport/'+element.get('href'))
+                                    html_page_playerprofiles = r_playerprofile.content
+                                    soup_playerprofile = BeautifulSoup(html_page_playerprofiles, "lxml")
+                                    try:
+                                        playerprofilelink = [playerprofile.get('href') for playerprofile in soup_playerprofile.find_all('a') if "/player/" in playerprofile.get('href')][0]
+                                        lst.append(playerprofilelink)
+                                        playernamedict[playerprofilelink] = stripseed(element.string)
+                                        variantlinks[element.get('href')] = playerprofilelink
+                                    except(IndexError):
+                                        lst.append('/player/'+stripseed(element.string))
+                                        playernamedict['/player/'+stripseed(element.string)] = stripseed(element.string)
+                                 #the player profile link has already been accessed, no need to access it again
+                                else:
+                                    lst.append(variantlinks[line.get('href')])
+                        #Add the length of the list to the front of the list
+                        #If it is doubles, len = 4 and 2 if singles
+                        if (len(lst) == 4 or len(lst) == 2):
+                            list_of_matches += [len(lst)] + lst
+                        
+      
+            for i,value in enumerate(list_of_matches):
+                try:
+                    if value == 2:
+                        temp_df = pd.DataFrame({'Winner':list_of_matches[i+1],'Loser':list_of_matches[i+2]},index=[1])
+                        singles_df = pd.concat([singles_df,temp_df],ignore_index=True)
+                    elif value == 4: 
+                        temp_df = pd.DataFrame({'Winner1':list_of_matches[i+1],'Winner2':list_of_matches[i+2],
+                                                        'Loser1':list_of_matches[i+3],'Loser2':list_of_matches[i+4]},index=[1])
+            
+                        doubles_df = pd.concat([doubles_df,temp_df],ignore_index=True)
+                except:
+                    pass
+      
+
+        singles_df.to_csv('tournament_data/'+tournament_name.replace(" ", "")+'_singles.csv')
+        doubles_df.to_csv('tournament_data/'+tournament_name.replace(" ", "")+'_doubles.csv')
+        dict_to_csv(mydict=playernamedict,filepath=('tournament_data/'+tournament_name.replace(" ", "")+'_players.csv'))
+        print("Cached results of tournament: "+tournament_name)
+        return {"Player links": playernamedict,"Singles results": singles_df,"Doubles results":doubles_df}          
+        '''
             for line in soup.find_all('a'):
+                
+                
                 #if the link is a draw, add it to a list that tabulates all the matches in a coherent form
                 if "draw=" in line.get('href'):
                     list_of_matches.append(line.get('href'))
@@ -225,6 +289,7 @@ def scraper(tournamentlink):
                     #the player profile link has already been accessed, no need to access it again
                     else:
                         list_of_matches.append(variantlinks[line.get('href')])
+                        
             for i,line in enumerate(list_of_matches):
                 if "draw=" in line:
                     try:
@@ -249,7 +314,7 @@ def scraper(tournamentlink):
         dict_to_csv(mydict=playernamedict,filepath=('tournament_data/'+tournament_name.replace(" ", "")+'_players.csv'))
         print("Cached results of tournament: "+tournament_name)
         return {"Player links": playernamedict,"Singles results": singles_df,"Doubles results":doubles_df}
-
+        '''
 
 
 
