@@ -98,7 +98,10 @@ class Alias:
     
     def get_default_id(self, name,currentid = None):
         rownum = self.case_insensitive_search(term=name)
-        return self.aliases[rownum][1]
+        if rownum !=-1:
+            return self.aliases[rownum][1]
+        else:
+            raise IndexError("No such name exists")
     
     
 #define a function to replace the nth occurence of a substring in a string
